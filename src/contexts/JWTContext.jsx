@@ -54,14 +54,14 @@ export const JWTProvider = ({ children }) => {
     const init = async () => {
       try {
         const serviceToken = window.sessionStorage.getItem('serviceToken');
-        if (serviceToken && verifyToken(serviceToken)) {
+        if (serviceToken) {
           setSession(serviceToken);
           const response = await axios.get(`${baseUrl}auth/authorize`);
           console.log('1------------->',response.data);
 
 
           const userData = response.data.data
-          sessionStorage.setItem("defaultOffice", userData.defaultOffice)
+          sessionStorage.setItem("defaultOffice", userData.defaultOfficeId)
           sessionStorage.setItem("companies", JSON.stringify(userData.companies))
           sessionStorage.setItem("phoneNumber", userData.phoneNumber)
           sessionStorage.setItem("role", userData.role)
@@ -72,6 +72,7 @@ export const JWTProvider = ({ children }) => {
           sessionStorage.setItem("defaultCompanyId", userData.defaultCompanyId)
           sessionStorage.setItem("defaultCompanyName", userData.defaultCompanyName)
           sessionStorage.setItem("isStaff", userData.isStaff)
+          window.location.href = "/dashboard"
           
 
 
@@ -108,7 +109,7 @@ export const JWTProvider = ({ children }) => {
   const login = async (token, type) => {
     console.log('login--------->>>>>>>>>>>>>', token, type);
 
-    // setSession(token);
+    setSession(token);
     dispatch({
       type: LOGIN,
       payload: {

@@ -1,2 +1,2 @@
-export const baseUrl = `https://185.241.151.38:7906/api/v1/`;
-export const WEBSOCKET_URL = `wss://185.241.151.38:7906/ws`;
+export const baseUrl = `https://kopakwetu.co.tz:7906/api/v1/`;
+export const WEBSOCKET_URL = `wss://kopakwetu.co.tz:7906/ws`;
