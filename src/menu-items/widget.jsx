@@ -84,6 +84,7 @@ const defaultIcon = IdcardOutlined;
 // Function to get routes from sessionStorage
 const getSessionRouters = () => {
   const storedRouters = sessionStorage.getItem('routers');
+  //alert(storedRouters)
   return storedRouters ? JSON.parse(storedRouters) : [];
 };
 

@@ -91,7 +91,8 @@ export default function ChatDrawer({ handleDrawerOpen, openChatDrawer, setUser, 
       ModalProps={{ keepMounted: true }}
       onClose={handleDrawerOpen}
     >
-      <MainCard
+      
+      {/* <MainCard
         sx={{
           bgcolor: downLG ? 'transparent' : drawerBG,
           borderRadius: '4px 0 0 4px',
@@ -260,7 +261,8 @@ export default function ChatDrawer({ handleDrawerOpen, openChatDrawer, setUser, 
             </Grid>
           </Grid>
         </Box>
-      </MainCard>
+      </MainCard> */}
+
     </Drawer>
   );
 }

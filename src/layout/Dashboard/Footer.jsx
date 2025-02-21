@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 export default function Footer() {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: '24px 16px 0px', mt: 'auto' }}>
-      <Typography variant="caption">&copy; All rights reserved</Typography>
+      {/* <Typography variant="caption">&copy; All rights reserved</Typography> */}
       <Stack spacing={1.5} direction="row" justifyContent="space-between" alignItems="center">
-        <Link
+        {/* <Link
           component={RouterLink}
           to="https://mui.com/store/items/mantis-react-admin-dashboard-template/"
           target="_blank"
@@ -24,7 +24,7 @@ export default function Footer() {
         </Link>
         <Link component={RouterLink} to="#" target="_blank" variant="caption" color="text.primary">
           Terms
-        </Link>
+        </Link> */}
       </Stack>
     </Stack>
   );

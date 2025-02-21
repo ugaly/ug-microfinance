@@ -152,7 +152,7 @@ const LoanInactiveScreen = () => {
         accessorKey: 'name',
       },
       {
-        header: 'Principal',
+        header: 'Outstanding',
         accessorKey: 'principal',
       },
       {
@@ -177,10 +177,28 @@ const LoanInactiveScreen = () => {
           }
         },
       },
+      {
+        header: 'Product',
+        accessorKey: 'productInfo',
+      },
+      {
+        header: 'BanchName',
+        accessorKey: 'officeName',
+      },
+      {
+        header: 'District',
+        accessorKey: 'officeDistrict',
+      },
+      {
+        header: 'Region',
+        accessorKey: 'officeRegion',
+      },
       
     ],
     []
   );
+
+
 
   // Handle filter changes
   const handleFilterChange = (key, value) => {

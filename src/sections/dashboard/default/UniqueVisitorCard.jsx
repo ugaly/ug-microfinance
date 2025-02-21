@@ -20,7 +20,7 @@ export default function UniqueVisitorCard() {
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Unique Visitor</Typography>
+          <Typography variant="h5">Gawa na Marejesho</Typography>
         </Grid>
         <Grid item>
           <Stack direction="row" alignItems="center" spacing={0}>
@@ -30,7 +30,7 @@ export default function UniqueVisitorCard() {
               color={view === 'monthly' ? 'primary' : 'secondary'}
               variant={view === 'monthly' ? 'outlined' : 'text'}
             >
-              Month
+              Mwezi
             </Button>
             <Button
               size="small"
@@ -38,7 +38,7 @@ export default function UniqueVisitorCard() {
               color={view === 'weekly' ? 'primary' : 'secondary'}
               variant={view === 'weekly' ? 'outlined' : 'text'}
             >
-              Week
+              Wiki
             </Button>
           </Stack>
         </Grid>

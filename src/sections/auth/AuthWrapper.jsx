@@ -20,6 +20,7 @@ import useAuth from 'hooks/useAuth';
 // assets
 import AuthBackground from './AuthBackground';
 import ExclamationCircleOutlined from '@ant-design/icons/ExclamationCircleOutlined';
+import AuthBackgroundPolygon from './AuthBackgroundPolygon';
 
 // ==============================|| AUTHENTICATION - WRAPPER ||============================== //
 
@@ -48,13 +49,17 @@ export default function AuthWrapper({ children }) {
 
   return (
     <Box sx={{ minHeight: '100vh',
-      backgroundImage: 'url(https://images.unsplash.com/photo-1640574232355-08659783b9fb?q=80&w=3544&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', // Replace with your image path
+      //backgroundImage: 'url(https://images.unsplash.com/photo-1640574232355-08659783b9fb?q=80&w=3544&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', // Replace with your image path
       backgroundSize: 'cover', // Ensures the image covers the entire area
       backgroundPosition: 'center', // Centers the image
       backgroundRepeat: 'no-repeat', // Prevents repeating the image
+      backgroundColor:'#7e6aafcc'
      }} 
     >
-      {/* <AuthBackground /> */}
+      
+      <AuthBackground />
+      <AuthBackgroundPolygon/>
+
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
         {/* <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
           <Logo />
@@ -63,10 +68,11 @@ export default function AuthWrapper({ children }) {
           <Grid
             item
             xs={12}
+            
             container
             justifyContent="center"
             alignItems="center"
-            sx={{ minHeight: { xs: 'calc(100vh - 210px)', sm: 'calc(100vh - 134px)', md: 'calc(100vh - 112px)' } }}
+            sx={{ minHeight: { xs: 'calc(100vh - 210px)', sm: 'calc(100vh - 134px)', md: 'calc(100vh - 112px)' } , overflow: 'hidden' }}
           >
             <Grid item>
               {!isLoggedIn && authParam && (

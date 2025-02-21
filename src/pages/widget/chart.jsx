@@ -56,7 +56,7 @@ export default function WidgetChart() {
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">Income Overview</Typography>
+            <Typography variant="h5">Income Overvie</Typography>
           </Grid>
           <Grid item />
         </Grid>

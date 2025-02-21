@@ -72,9 +72,6 @@ export const JWTProvider = ({ children }) => {
           sessionStorage.setItem("defaultCompanyId", userData.defaultCompanyId)
           sessionStorage.setItem("defaultCompanyName", userData.defaultCompanyName)
           sessionStorage.setItem("isStaff", userData.isStaff)
-          window.location.href = "/dashboard"
-          
-
 
           const { user } = response.data;
           dispatch({
@@ -97,7 +94,9 @@ export const JWTProvider = ({ children }) => {
       }
     };
 
+
     init();
+
   }, []);
 
 
@@ -116,6 +115,9 @@ export const JWTProvider = ({ children }) => {
         isLoggedIn: true,
         // user
       }
+
+    
+
     });
 
 

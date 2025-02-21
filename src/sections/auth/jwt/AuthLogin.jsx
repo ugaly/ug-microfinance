@@ -196,7 +196,7 @@
 
 
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import QRCode from "react-qr-code";
 import useAuth from 'hooks/useAuth';
 import { WEBSOCKET_URL } from "Service/baseUrl";
@@ -240,9 +240,15 @@ const AuthLogin = () => {
       }
 
       if (data.token) {
+
+        sessionStorage.setItem("fistTime", "true");
         console.log("WebSocket connection closed after receiving token and token is: ", data.token);
-        login(data.token, 'jwt');
+        //alert(data.token);
+        sessionStorage.setItem("serviceToken", data.token);
+        window.location='/dashboard';
+        //login(data.token, 'jwt');
         socket.close();
+
       }
 
 
@@ -274,7 +280,7 @@ const AuthLogin = () => {
       p={3}
     >
       <Typography variant="h4" gutterBottom>
-        Connect via QR Code
+        KopaKwetu Admin
       </Typography>
       <Typography variant="body1" sx={{ textAlign: "center" }} gutterBottom>
         Scan the QR code with your mobile to sign in.
@@ -284,7 +290,7 @@ const AuthLogin = () => {
        
       </Box>
       <Typography variant="body2" mt={2} sx={{ textAlign: "center" }}>
-        By signing in, you agree to our Terms & Privacy Policy.
+        Developed by JZA Tech Limited
       </Typography>
     </Box>
   );
