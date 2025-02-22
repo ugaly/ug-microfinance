@@ -29,7 +29,7 @@ export default function HeaderContent() {
   const localization = useMemo(() => <Localization />, []);
 
   const megaMenu = useMemo(() => <MegaMenuSection />, []);
-  const { defaultOfficeId, setDefaultOfficeId } = useState('');
+  const [defaultOfficeId, setDefaultOfficeId] = useState('');
 
 
   return (
@@ -42,15 +42,12 @@ export default function HeaderContent() {
       {/* {!downLG && localization} */}
 
       <div>
-
-        
-
       <FormControl size="small" sx={{ minWidth: 300 }}>
         <InputLabel>Chagua Tawi</InputLabel>
           <Select
                 value={defaultOfficeId || ''}
                 onChange={(e) => {
-                  sessionStorage.setItem('defaultOfficeId', e.target.value);
+                  sessionStorage.setItem('defaultOffice', e.target.value);
                   setDefaultOfficeId(e.target.value);
                 }}
                 label="Chagua Tawi"

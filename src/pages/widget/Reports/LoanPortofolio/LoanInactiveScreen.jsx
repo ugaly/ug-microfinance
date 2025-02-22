@@ -17,18 +17,33 @@ import {
   TextField,
   Box,
   Pagination,
-  Grid,
   Avatar,
+  Tabs,
+  Tab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Button,
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport } from 'components/third-party/react-table';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { baseUrl } from 'Service/baseUrl';
+import Trustees from './loan_profile/tabs/Trustees';
+import Bonds from './loan_profile/tabs/Bonds';
+import LoanProfile from './loan_profile/tabs/LoanProfile';
+import Mkataba from './loan_profile/tabs/Mkataba';
+import MapView from './loan_profile/tabs/MapView';
+import Transacrions from './loan_profile/tabs/Transacrions';
+import LoanProfileDialog from './loan_profile/dialogs/LoanProfileDialog';
+import { set } from 'lodash';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data }) {
+function ReactTable({ columns, data,on }) {
   const table = useReactTable({
     data,
     columns,
@@ -42,6 +57,11 @@ function ReactTable({ columns, data }) {
       key: columns.columnDef.accessorKey,
     })
   );
+
+  const rowClicked = (r) => {
+    console.log(r.original);
+    setOpen(true)
+  }
 
   return (
     <MainCard
@@ -63,17 +83,19 @@ function ReactTable({ columns, data }) {
                 </TableRow>
               ))}
             </TableHead>
+
             <TableBody>
               {table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} {...cell.column.columnDef.meta}>
+                    <TableCell key={cell.id} {...cell.column.columnDef.meta} onClick={()=>rowClicked(row)}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))}
             </TableBody>
+
           </Table>
         </TableContainer>
       </ScrollX>
@@ -103,6 +125,8 @@ const LoanInactiveScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [tabIndex,setTabIndex] = useState(0)
+  const [open,setOpen] = useState(false)
 
   // Fetch data from API
   useEffect(() => {
@@ -160,43 +184,32 @@ const LoanInactiveScreen = () => {
         accessorKey: 'payToday',
       },
       {
-        header: 'Loan Officer',
-        accessorKey: 'loanOfficer',
-      },
-      {
         header: 'Pay Status',
         accessorKey: 'payStatus',
         cell: (cell) => {
           switch (cell.getValue()) {
-            case 'Kamili':
-              return <Chip color="success" label="Kamili" size="small" variant="light" />;
-            case 'Pungufu':
-              return <Chip color="warning" label="Pungufu" size="small" variant="light" />;
+            case 'KAMILI':
+            case 'MPYA':
+            case 'DABO':
+              return <Chip color="success" label={cell.getValue()} size="small" variant="light" />;
+            case 'PUNGUFU':
+              return <Chip color="warning" label={cell.getValue()}size="small" variant="light" />;
+            case 'HAJALIPA':
+              return <Chip color="error" label={cell.getValue()} size="small" variant="light" />;
             default:
-              return <Chip color="info" label="Unknown" size="small" variant="light" />;
+              return <Chip color="info" label={cell.getValue()} size="small" variant="light" />;
           }
         },
       },
       {
         header: 'Product',
         accessorKey: 'productInfo',
-      },
-      {
-        header: 'BanchName',
-        accessorKey: 'officeName',
-      },
-      {
-        header: 'District',
-        accessorKey: 'officeDistrict',
-      },
-      {
-        header: 'Region',
-        accessorKey: 'officeRegion',
-      },
+      }
       
     ],
     []
   );
+
 
 
 
@@ -213,89 +226,134 @@ const LoanInactiveScreen = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+
+
+ 
+
+
+  //const [open, setOpen] = useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+
+  const handleRowClick = (row) => {
+    //setSelectedLoan(row.original); // Get the full row data
+    console.log(row.original)
+    setOpen(true);
+  };
+
+
+
+  
+
+  
   return (
     <div>
       {/* MainCard with Filters in Header */}
+
+
+      {open? (
+        <LoanProfileDialog open={open} onClose={() => setOpen(false)} />
+      ):
+
       <MainCard
-        content={false}
-        title="Loan List"
-        secondary={
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            {/* Search Filter */}
-            <TextField
-              size="small"
-              placeholder="Search..."
-              value={filters.search || ''}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-            />
+      content={true}
+      title="Mikopo Yote"
+      secondary={
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* Search Filter */}
+          <TextField
+            size="small"
+            placeholder="Search..."
+            value={filters.search || ''}
+            onChange={(e) => handleFilterChange('search', e.target.value)}
+          />
 
-            {/* Status Dropdown */}
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={filters.status || ''}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-                label="Status"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="ACTIVE">Active</MenuItem>
-                <MenuItem value="APPROVED">Approved</MenuItem>
-              </Select>
-            </FormControl>
+          {/* Status Dropdown */}
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={filters.status || ''}
+              onChange={(e) => handleFilterChange('status', e.target.value)}
+              label="Status"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="ACTIVE">Active</MenuItem>
+              <MenuItem value="APPROVED">Approved</MenuItem>
+            </Select>
+          </FormControl>
 
-            {/* Product ID Dropdown */}
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <InputLabel>Product ID</InputLabel>
-              <Select
-                value={filters.productId || ''}
-                onChange={(e) => handleFilterChange('productId', e.target.value)}
-                label="Product ID"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="1">Product 1</MenuItem>
-                <MenuItem value="2">Product 2</MenuItem>
-              </Select>
-            </FormControl>
+          {/* Product ID Dropdown */}
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Product ID</InputLabel>
+            <Select
+              value={filters.productId || ''}
+              onChange={(e) => handleFilterChange('productId', e.target.value)}
+              label="Product ID"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">Product 1</MenuItem>
+              <MenuItem value="2">Product 2</MenuItem>
+            </Select>
+          </FormControl>
 
-            {/* Loan Officer Dropdown */}
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <InputLabel>Loan Officer</InputLabel>
-              <Select
-                value={filters.loanOfficerId || ''}
-                onChange={(e) => handleFilterChange('loanOfficerId', e.target.value)}
-                label="Loan Officer"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="1">Officer 1</MenuItem>
-                <MenuItem value="2">Officer 2</MenuItem>
-              </Select>
-            </FormControl>
+          {/* Loan Officer Dropdown */}
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Loan Officer</InputLabel>
+            <Select
+              value={filters.loanOfficerId || ''}
+              onChange={(e) => handleFilterChange('loanOfficerId', e.target.value)}
+              label="Loan Officer"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">Officer 1</MenuItem>
+              <MenuItem value="2">Officer 2</MenuItem>
+            </Select>
+          </FormControl>
 
-            {/* Date Picker */}
-            <TextField
-              size="small"
-              type="date"
-              label="Date"
-              InputLabelProps={{ shrink: true }}
-              value={filters.date || ''}
-              onChange={(e) => handleFilterChange('date', e.target.value)}
-            />
-          </Box>
-        }
-      >
-        {/* Table */}
-        <ReactTable columns={columns} data={data} />
-
-        {/* Pagination */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <Pagination
-            count={totalPages}
-            page={filters.page + 1}
-            onChange={handlePageChange}
-            color="primary"
+          {/* Date Picker */}
+          <TextField
+            size="small"
+            type="date"
+            label="Date"
+            InputLabelProps={{ shrink: true }}
+            value={filters.date || ''}
+            onChange={(e) => handleFilterChange('date', e.target.value)}
           />
         </Box>
-      </MainCard>
+      }
+    >
+
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Add Loan
+      </Button>
+
+      {/* Table */}
+      <ReactTable columns={columns} data={data}/>
+
+      {/* Pagination */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Pagination
+          count={totalPages}
+          page={filters.page + 1}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
+    </MainCard>
+    }  
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 };
